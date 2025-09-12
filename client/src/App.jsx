@@ -6,6 +6,7 @@ import Credit from './pages/Credit'
 import Community from './pages/Community'
 import { useState } from 'react'
 import { assets } from './assets/assets'
+import './assets/prism.css'
 
 
 const App = () => {
