@@ -1,5 +1,5 @@
 
-import { Route, Routes } from 'react-router'
+import { Route, Routes, useLocation } from 'react-router'
 import SideBar from './components/SideBar'
 import { ChatBot } from './components/ChatBot'
 import Credit from './pages/Credit'
@@ -7,10 +7,13 @@ import Community from './pages/Community'
 import { useState } from 'react'
 import { assets } from './assets/assets'
 import './assets/prism.css'
+import Loading from './pages/Loading'
 
 
 const App = () => {
   const [isMenuOpen,setIsMenuOpen]=useState(false)
+  const {pathname}=useLocation()
+  if(pathname==='/loading') return <Loading/>
   return (
     <>
     {!isMenuOpen&&<img src={assets.menu_icon} className='absolute top-3 left-3w-8 h-8 cursor-pointer md:hidden
