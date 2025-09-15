@@ -1,5 +1,5 @@
-import { use } from 'react';
-import User from '../models/User.js';
+
+import User from '../models/User.js'
 import jwt from 'jsonwebtoken'
 
 export const protect=async(req,res,next)=>{
