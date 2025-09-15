@@ -3,6 +3,7 @@ import 'dotenv/config'
 import cors from 'cors'
 import connectBD from './config/db.js'
 import userRouter from './routes/userRoutes.js'
+import chatRouter from './routes/chatRoutes.js'
 
 const app = express()
 
@@ -17,7 +18,8 @@ const startServer = async () => {
 
     // ❌ app.get is wrong for router
     // ✅ use app.use instead
-    app.use('/api/user', userRouter)
+    app.use('/api/user', userRouter);
+    app.use('/api/chat',chatRouter)
 
     const PORT = process.env.PORT || 3000
     app.listen(PORT, () => {
