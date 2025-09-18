@@ -5,23 +5,26 @@ import connectBD from './config/db.js'
 import userRouter from './routes/userRoutes.js'
 import chatRouter from './routes/chatRoutes.js'
 import messageRouter from './routes/messageRoutes.js'
+import creditRouter from './routes/creditRoute.js'
+import { stripeWebhooks } from './controllers/webhooks.js'
 
 const app = express()
 
 const startServer = async () => {
   try {
     await connectBD()
+    app.post('/api/stripe',express.raw({type:'application/jsoono'}),stripeWebhooks)
 
     app.use(cors())
     app.use(express.json())
 
     app.get('/', (req, res) => res.send('Server is Live!'))
 
-    // ❌ app.get is wrong for router
-    // ✅ use app.use instead
+   
     app.use('/api/user', userRouter);
     app.use('/api/chat',chatRouter);
-    app.use('/api/message',messageRouter)
+    app.use('/api/message',messageRouter);
+    app.use('/api/credit',creditRouter);
 
     const PORT = process.env.PORT || 3000
     app.listen(PORT, () => {
