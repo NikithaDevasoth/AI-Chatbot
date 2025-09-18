@@ -1,5 +1,5 @@
 import Transaction from "../models/Transaction.js"
-
+import Stripe from 'stripe'
 const plans=[
     {
         _id: "basic",
@@ -31,6 +31,7 @@ export const getPlans=async(req,res)=>{
         res.json({success:false,message:error.message})
     }
 }
+const stripe=new Stripe(process.env.STRIPE_SECRETE_KEY)
 export const purchasePlan=async(req,res)=>{
     try{
         const {planId}=req.body
@@ -47,6 +48,14 @@ export const purchasePlan=async(req,res)=>{
             credits:plan.credits,
             isPaid:false
 
+        })
+        const session=await stripe.checkout.sessions.create({
+            success_url:'https://example.com/success',
+            line_items:[
+                {
+                    price:'price_'
+                }
+            ]
         })
         
     }catch(error){
