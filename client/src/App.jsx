@@ -9,12 +9,14 @@ import { assets } from './assets/assets'
 import './assets/prism.css'
 import Loading from './pages/Loading'
 import Credits from './pages/Credits'
+import {Toaster} from 'react-hot-toast'
 
 import { useAppContext } from './context/AppContext'
 import Login from './pages/Login'
 
 
 const App = () => {
+  <Toaster/>
   const {user}=useAppContext()
   const [isMenuOpen,setIsMenuOpen]=useState(false)
   const {pathname}=useLocation()
