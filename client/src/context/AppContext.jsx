@@ -3,6 +3,7 @@ import { data, useNavigate } from "react-router";
 import { dummyChats,dummyUserData } from "../assets/assets";
 import axios from 'axios'
 import toast from "react-hot-toast";
+import { tokenize } from "prismjs";
 axios.defaults.baseURL=import.meta.env.VITE_SERVER_URL;
 const AppContext = createContext();
 
@@ -17,7 +18,7 @@ export const AppContextProvider = ({ children }) => {
 
     const fetchUser = async () => {
       try{
-       await axios.get('/api/user/data',{headers:{Authorization:token}})
+      const {data}= await axios.get('/api/user/data',{headers:{Authorization:token}})
        if(data.success){
         setUser(data.user)
        }
@@ -27,11 +28,25 @@ export const AppContextProvider = ({ children }) => {
       } catch(error){
         toast.error(error.message)
         // Make sure dummyUserData is defined/imported
+    }
+    finally{
+        setLoadingUser(false)
+    }
     };
+    const createNewChat=async ()=>{
+        try{
+            if(!user) return toast('Login to create new chat')
+                navigate('/')
+            await axios.get('/api/chat/create',{headers:{Authorization:token}})
+            await fetchUsersChat()
+        }
+    catch(error){
+  toast.error(error.message)
+    }
 
+    }
     const fetchUsersChat = async () => {
-        setChats(dummyChats); // Make sure dummyChats is defined/imported
-        setSelectedChat(dummyChats[0]);
+     const {data}=await axios.get('/api/chat/get',{headers:{Authorization:token}})
     };
 
     useEffect(() => {
@@ -70,5 +85,5 @@ export const AppContextProvider = ({ children }) => {
         </AppContext.Provider>
     );
 };
-}
+
 export const useAppContext = () => useContext(AppContext);
