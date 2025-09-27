@@ -46,7 +46,24 @@ export const AppContextProvider = ({ children }) => {
 
     }
     const fetchUsersChat = async () => {
+        try{
      const {data}=await axios.get('/api/chat/get',{headers:{Authorization:token}})
+     if(data.success){
+        setChats(data.chats)
+        if(data.chats.length===0){
+            await createNewChat();
+            return fetchUsersChat()
+        }
+        else{
+            setSelectedChat(data.chats[0])
+        }
+     }else{
+        toast.error(data.message)
+     }
+    }
+    catch(error){
+        toast.error(error.message)
+    }
     };
 
     useEffect(() => {
@@ -68,15 +85,22 @@ export const AppContextProvider = ({ children }) => {
     }, [theme]);
 
     useEffect(() => {
-        fetchUser();
-    }, []);
+        if(token){
+            fetchUser();
+
+        }else{
+            setUser(null)
+            setLoadingUser(false)
+        }
+        
+    }, [token]);
 
     const value = {
         navigate,
         user, setUser, fetchUser,
         chats, setChats,
         selectedChat, setSelectedChat,
-        theme, setTheme
+        theme, setTheme,createNewChat,loadingUser,fetchUsersChat,token,setToken,axios
     };
 
     return (
