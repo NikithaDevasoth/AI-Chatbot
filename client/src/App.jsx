@@ -16,13 +16,15 @@ import Login from './pages/Login'
 
 
 const App = () => {
-  <Toaster/>
-  const {user}=useAppContext()
+
+  const {user,loadingUser}=useAppContext()
   const [isMenuOpen,setIsMenuOpen]=useState(false)
   const {pathname}=useLocation()
-  if(pathname==='/loading') return <Loading/>
+  if(pathname==='/loading'||loadingUser) return <Loading/>
   return (
-    <>
+    <>  
+    <Toaster position='top-right'/>
+
     {!isMenuOpen&&<img src={assets.menu_icon} className='absolute top-3 left-3w-8 h-8 cursor-pointer md:hidden
     not-dark:invert' onClick={()=>setIsMenuOpen(true)} />}
     {user?(
