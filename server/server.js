@@ -15,7 +15,12 @@ const startServer = async () => {
     await connectBD()
     app.post('/api/stripe',express.raw({type:'application/jsoono'}),stripeWebhooks)
 
-    app.use(cors())
+   app.use(cors({
+  origin: "http://localhost:5173",   // React frontend URL
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
     app.use(express.json())
 
     app.get('/', (req, res) => res.send('Server is Live!'))

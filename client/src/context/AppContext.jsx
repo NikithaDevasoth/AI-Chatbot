@@ -18,7 +18,12 @@ export const AppContextProvider = ({ children }) => {
 
     const fetchUser = async () => {
       try{
-      const {data}= await axios.get('/api/user/data',{headers:{Authorization:token}})
+const { data } = await axios.get("http://localhost:3000/api/user/data", {
+  headers: {
+    Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YzdhYzVjYmY4Y2U4YjJhMWNmNzg5ZSIsImlhdCI6MTc1ODA5NzY4MCwiZXhwIjoxNzYwNjg5NjgwfQ.4lqZ2zv3Zi2sPoQiPBuEtOXh4S3PBWoM_buz5hpqyBI', // raw token only
+  },
+});
+
        if(data.success){
         setUser(data.user)
        }

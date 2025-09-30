@@ -5,7 +5,7 @@ import moment from 'moment'
 import toast from "react-hot-toast";
 
 const SideBar = ({isMenuOpen,setIsMenuOpen}) => {
-  const { chats, setSelectedChat, theme, setTheme, user,navigate,createNewChat,axios,setChats,fetchUsersChats,setTokent} = useAppContext();
+  const { chats, setSelectedChat, theme, setTheme, user,navigate,createNewChat,axios,setChats,fetchUsersChats,setTokent,token} = useAppContext();
   const [search, setSearch] = useState("");
   const logout=()=>{
     localStorage.removeItem('token')
@@ -17,8 +17,20 @@ const SideBar = ({isMenuOpen,setIsMenuOpen}) => {
       e.stopPropagation()
       const confirm=window.confirm('Are you sure you want to delete this chat?');
       
-    }
+   
+if(!confirm) return 
+const{data}=await axios.post('/api/chat/delete',{chatId},{
+  headers:{Authorization:token}})
+  if(data.success){
+setChats(prev=>prev.filter(chat=>chat._id!==chatId)
+)
+await fetchUsersChats()
+toast.success(data.message)
   }
+    }catch(error){
+      toast.error(error.message)
+  }
+}
 
   return (
     <div
@@ -35,7 +47,7 @@ const SideBar = ({isMenuOpen,setIsMenuOpen}) => {
       />
 
       {/* New Chat Button */}
-      <button
+      <button onClick={createNewChat}
         className="flex justify-center items-center
           w-full py-2 mt-10 text-white bg-gradient-to-r from-[#a456f7] to-[#3D81F6] 
           text-sm rounded-md cursor-pointer"
@@ -88,7 +100,7 @@ const SideBar = ({isMenuOpen,setIsMenuOpen}) => {
                 src={assets.bin_icon}
                 className="hidden group-hover:block w-4 cursor-pointer not-dark:invert"
                 alt="Delete"
-              />
+             onClick={e=>toast.promise(deleteChat(e,chat._id),{loading:'deleting..'})} />
             </div>
           ))}
       </div>
