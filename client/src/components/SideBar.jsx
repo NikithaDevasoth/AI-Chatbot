@@ -2,10 +2,23 @@ import React, { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import moment from 'moment'
+import toast from "react-hot-toast";
 
 const SideBar = ({isMenuOpen,setIsMenuOpen}) => {
-  const { chats, setSelectedChat, theme, setTheme, user,navigate } = useAppContext();
+  const { chats, setSelectedChat, theme, setTheme, user,navigate,createNewChat,axios,setChats,fetchUsersChats,setTokent} = useAppContext();
   const [search, setSearch] = useState("");
+  const logout=()=>{
+    localStorage.removeItem('token')
+    setTokent(null)
+    toast.success('Logged out Successfully')
+  }
+  const deleteChat=async(e,chatId)=>{
+    try{
+      e.stopPropagation()
+      const confirm=window.confirm('Are you sure you want to delete this chat?');
+      
+    }
+  }
 
   return (
     <div
@@ -144,7 +157,7 @@ const SideBar = ({isMenuOpen,setIsMenuOpen}) => {
     alt="User Icon"
   />
   <p className="flex-1 text-sm dark:text-primary truncate">{user?user.name:'Login your account'}</p>
-  {user&&<img src={assets.logout_icon} className="h-5 cursor-pointer hidden
+  {user&&<img onClick={logout} src={assets.logout_icon} className="h-5 cursor-pointer hidden
   not-dark:invert group-hover:block"/>}
 </div>
 <img onClick={()=>setIsMenuOpen(false)} src={assets.close_icon} className="absolute top-3 right-3 w-5 h-5
