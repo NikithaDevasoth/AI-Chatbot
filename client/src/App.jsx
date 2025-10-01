@@ -2,7 +2,6 @@
 import { Route, Routes, useLocation } from 'react-router'
 import SideBar from './components/SideBar'
 import { ChatBot } from './components/ChatBot'
-import Credit from './pages/Credit'
 import Community from './pages/Community'
 import { useState } from 'react'
 import { assets } from './assets/assets'
