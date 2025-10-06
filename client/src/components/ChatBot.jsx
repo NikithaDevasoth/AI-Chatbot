@@ -14,7 +14,7 @@ export const ChatBot = () => {
   const [isPublished,setIsPublished]=useState(false);
   const onSubmit=async(e)=>{
    
-    try{
+try{
  e.preventDefault()
  if(!user) return toast('Login to send message')
   setLoading(true)
