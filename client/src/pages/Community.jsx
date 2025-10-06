@@ -11,13 +11,16 @@ const Community = () => {
   const fetchImages=async()=>{
   try{
     const {data}=await axios.get('/api/user/published-images');
-    if(data.success){
+    if(data.success && data.images.length > 0){
       setImages(data.images)
     }else{
-      toast.error(error.message)
+      toast.error(data.message|| "No published images found")
+      setImages(dummyPublishedImages);
     }
   }catch(error){
-toast.error(error.message)
+toast.error(error.message||"Failed to fetch images")
+setImages(dummyPublishedImages);
+
   }
   setLoading(false)
   }

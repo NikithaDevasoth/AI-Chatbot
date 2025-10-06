@@ -1,3 +1,4 @@
+
 import imagekit from "../config/imageKit.js";
 import openai from "../config/openai.js";
 import Chat from "../models/Chat.js";
@@ -72,7 +73,9 @@ export const imageMessageController = async (req, res) => {
 
     // Find chat
     const chat = await Chat.findOne({ userId, _id: chatId });
-
+  if (!chat) {
+      return res.status(404).json({ success: false, message: "Chat not found" });
+    }
     // Push user message
     chat.messages.push({
       role: "user",
