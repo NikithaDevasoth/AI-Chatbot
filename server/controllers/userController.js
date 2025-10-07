@@ -63,16 +63,17 @@ export const getPublishedImages=async(req,res)=>{
         const publishedImageMessages=await Chat.aggregate([
             {$unwind:"$messages"},
             {$match:{
-                "messages.isImage":"true",
-                "messages.isPublished":"true"
+                "messages.isImage":true,
+                "messages.isPublished":true
             }
         },
         {
-            $project:{
-                _id:0,
-                imageUrl:"$messages.content",
-                usesrName:"$userName"
-            }
+            $project: {
+  _id: 0,
+  imageUrl: "$messages.content",
+  userName: "$userName"   // ✅ fixed spelling
+}
+
         }
         ])
         res.json({success:true,images:publishedImageMessages.reverse()})
