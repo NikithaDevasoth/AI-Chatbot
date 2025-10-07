@@ -7,16 +7,21 @@ import chatRouter from './routes/chatRoutes.js'
 import messageRouter from './routes/messageRoutes.js'
 import creditRouter from './routes/creditRoute.js'
 import { stripeWebhooks } from './controllers/webhooks.js'
+import bodyParser from 'body-parser';
+
+
 
 const app = express()
+
 
 const startServer = async () => {
   try {
     await connectBD()
-    app.post('/api/stripe',express.raw({type:'application/jsoono'}),stripeWebhooks)
+app.post('/api/stripe/webhook', bodyParser.raw({ type: 'application/json' }), stripeWebhooks);
 
    app.use(cors({
-  origin: "http://localhost:5173",   // React frontend URL
+  origin: "https://quick-gpt-sepia-eight.vercel.app", 
+    // React frontend URL
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
